@@ -86,6 +86,91 @@ $current_theme = $_COOKIE['theme'] ?? DEFAULT_THEME;
         gtag('config', '<?php echo GOOGLE_ANALYTICS_ID; ?>');
     </script>
     <?php endif; ?>
+    
+    <style>
+        /* Mobil uyumluluk iyileştirmeleri */
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        img,
+        video,
+        iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .floating-contact-buttons {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 24px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .floating-contact-button {
+            pointer-events: auto;
+            position: fixed;
+            bottom: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 0 18px;
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .floating-contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.25);
+        }
+
+        .floating-contact-button.whatsapp {
+            right: 24px;
+            background: #25d366;
+        }
+
+        .floating-contact-button.phone {
+            left: 24px;
+            background: #1f4cff;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact-button {
+                bottom: 20px;
+            }
+
+            .floating-contact-button.phone {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 84px;
+            }
+
+            .floating-contact-button.phone:hover {
+                transform: translateX(-50%) translateY(-2px);
+            }
+
+            .floating-contact-button.whatsapp {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .floating-contact-button.whatsapp:hover {
+                transform: translateX(-50%) translateY(-2px);
+            }
+        }
+    </style>
 </head>
 <body class="<?php echo $body_class; ?> theme-<?php echo $current_theme; ?>" data-theme="<?php echo $current_theme; ?>">
     
@@ -267,15 +352,21 @@ $current_theme = $_COOKIE['theme'] ?? DEFAULT_THEME;
     </header>
     
     <?php if (WHATSAPP_WIDGET_ENABLED): ?>
-    <!-- WhatsApp Widget -->
-    <div class="whatsapp-widget <?php echo WHATSAPP_WIDGET_POSITION; ?>" id="whatsapp-widget">
-        <a href="https://wa.me/<?php echo str_replace('+', '', CONTACT_WHATSAPP); ?>?text=<?php echo urlencode(WHATSAPP_MESSAGE); ?>" 
-           class="whatsapp-button" 
-           target="_blank" 
+    <div class="floating-contact-buttons" id="contact-buttons">
+        <a href="tel:+905070073210"
+           class="floating-contact-button phone"
+           aria-label="Telefon ile ara">
+            <i class="fas fa-phone"></i>
+            <span>HEMEN ARA</span>
+        </a>
+
+        <a href="https://wa.me/905070073210?text=<?php echo urlencode('araç çağırmak istiyorum.'); ?>"
+           class="floating-contact-button whatsapp"
+           target="_blank"
            rel="noopener"
-           aria-label="WhatsApp ile İletişim">
+           aria-label="WhatsApp ile araç çağır">
             <i class="fab fa-whatsapp"></i>
-            <span class="whatsapp-text">WhatsApp</span>
+            <span>ARAÇ ÇAĞIR</span>
         </a>
     </div>
     <?php endif; ?>
